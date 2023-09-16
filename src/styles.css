@@ -1,0 +1,22 @@
+h1, h2, h3, h4, h5, h6, p, div {
+    margin: 0;
+    padding: 0;
+}
+
+.section + .section {
+    margin-top: 32px;
+}
+
+.post {
+    border: 1px solid black;
+    padding: 16px;
+}
+
+.post + .post {
+    margin-top: 16px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}

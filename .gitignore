@@ -43,3 +43,6 @@ package-lock.json
 
 # intellij
 .idea
+
+# program side effects
+*.db
