@@ -2,6 +2,9 @@ import { Elysia } from "elysia";
 import html from "@elysiajs/html";
 import * as elements from "typed-html";
 import { Post, PostsDatabase } from "./posts";
+import * as sass from "sass";
+
+const stylesCompiled = sass.compile("src/styles.scss").css;
 
 const app = new Elysia()
     .use(html())
@@ -54,9 +57,11 @@ const app = new Elysia()
                             <p>"Raiders roll"</p>
                         </div>
                         <div class="footer__content__socials">
-                            <a class="link-email" href="mailto:olekdlugi@gmail.com" target="_blank">olekdlugi@gmail.com</a>
+                            <a class="link-email" href="mailto:olekdlugi@gmail.com"
+                               target="_blank">olekdlugi@gmail.com</a>
                             <a class="link-phone" href="tel:+48505873740" target="_blank">+48 505 873 740</a>
-                            <a class="link-linkedin" href="https://www.linkedin.com/in/adlugosz/" target="_blank">in/adlugosz</a>
+                            <a class="link-linkedin" href="https://www.linkedin.com/in/adlugosz/"
+                               target="_blank">in/adlugosz</a>
                         </div>
                     </div>
                 </div>
@@ -79,7 +84,9 @@ const app = new Elysia()
         }).catch(console.error);
         return <PostList posts={await db.list()}/>;
     })
-    .get("/styles.css", () => Bun.file("src/styles.css"))
+    .get("/styles.css", () =>
+        new Response(stylesCompiled, {headers: {'Content-Type': 'text/css'}})
+    )
     .get("/art/:file", ({params: {file}}) => Bun.file(`art/${file}`))
     .listen(3000);
 

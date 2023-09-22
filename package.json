@@ -7,7 +7,8 @@
   },
   "dependencies": {
     "@elysiajs/html": "0.6.5",
-    "elysia": "latest"
+    "elysia": "latest",
+    "sass": "1.68.0"
   },
   "devDependencies": {
     "bun-types": "latest",
