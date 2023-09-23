@@ -1,0 +1,77 @@
+@use "typography" as typography;
+@use "colors" as *;
+@use "elements/header" as header;
+@use "elements/footer" as footer;
+@use "elements/post" as post;
+@use "layout" as layout;
+@use "variables" as *;
+
+$posts-grid-area: posts;
+$toc-grid-area: toc;
+
+body {
+  background-color: color(other, background);
+  color: color(text, medium);
+}
+
+.content {
+  margin: auto;
+  padding: 4rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+            "#{header.$grid-area} #{header.$grid-area}"
+            "#{$posts-grid-area}  #{$toc-grid-area}   "
+            "#{footer.$grid-area} #{footer.$grid-area}";
+  gap: 10rem;
+  max-width: 1200px;
+}
+
+@media screen and (max-width: $media-breakpoint-desktop) {
+  .content {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+            "header"
+            "toc"
+            "posts"
+            "footer";
+  }
+}
+
+@media screen and (max-width: $media-breakpoint-phone) {
+  html {
+    font-size: 12px;
+  }
+}
+
+#header {
+  grid-area: header.$grid-area;
+  @include header.content
+}
+
+#posts {
+  grid-area: $posts-grid-area;
+  @include post.content;
+}
+
+#table-of-contents {
+  grid-area: $toc-grid-area;
+}
+
+#footer {
+  grid-area: footer.$grid-area;
+  @include footer.content;
+}
+
+
+@include layout.all;
+@include typography.typography-tag-styles;
+@include typography.typography-classes;
+
+a {
+  color: color(primary, medium);
+
+  &:hover {
+    color: color(primary, dark);
+  }
+}

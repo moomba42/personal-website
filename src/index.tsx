@@ -4,8 +4,6 @@ import * as elements from "typed-html";
 import { Post, PostsDatabase } from "./posts";
 import * as sass from "sass";
 
-const stylesCompiled = sass.compile("src/styles.scss").css;
-
 const app = new Elysia()
     .use(html())
     .decorate('db', new PostsDatabase())
@@ -15,7 +13,7 @@ const app = new Elysia()
             <div class="content">
                 <div id="header">
                     <div class="title">Moomba's Seaside Port</div>
-                    <div class="navigation">
+                    <div class="navigation flex-row items-start gap-9">
                         <ul>
                             <li>Posts</li>
                             <li>About Me</li>
@@ -30,16 +28,16 @@ const app = new Elysia()
                     <img class="art" src="/art/art1@2x.png" alt="A road leading to a castle in the distance."/>
                 </div>
                 <div id="posts" hx-get="/api/posts" hx-trigger="load" hx-swap="innerHTML"></div>
-                <div id="table-of-contents">
+                <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
-                    <div class="table-of-contents__tags">
+                    <div class="flex-row flex-wrap whitespace-nowrap gap-3">
                         <a href="#">#all</a>
                         <a href="#">#java</a>
                         <a href="#">#c++</a>
                         <a href="#">#godot</a>
                         <a href="#">#unity3d</a>
                         <a href="#">#python</a>
-                        <a href="#">#photosh</a>
+                        <a href="#">#photoshop</a>
                         <a href="#">#substance-painter</a>
                         <a href="#">#blender</a>
                         <a href="#">#animation</a>
@@ -49,14 +47,14 @@ const app = new Elysia()
                         <a href="#">#tgom</a>
                     </div>
                 </div>
-                <div id="footer">
-                    <div class="footer__cut-line"></div>
-                    <div class="footer__content">
-                        <div class="footer__content__copyright">
+                <div id="footer" class="flex-col">
+                    <div class="cut-line"></div>
+                    <div class="flex-row items-start justify-between p-5">
+                        <div class="flex-col items-start gap-4">
                             <p>© 2023 Aleksander Długosz</p>
-                            <p>"Raiders roll"</p>
+                            <q>Raiders roll</q>
                         </div>
-                        <div class="footer__content__socials">
+                        <div class="flex-col items-start gap-5">
                             <a class="link-email" href="mailto:olekdlugi@gmail.com"
                                target="_blank">olekdlugi@gmail.com</a>
                             <a class="link-phone" href="tel:+48505873740" target="_blank">+48 505 873 740</a>
@@ -85,7 +83,7 @@ const app = new Elysia()
         return <PostList posts={await db.list()}/>;
     })
     .get("/styles.css", () =>
-        new Response(stylesCompiled, {headers: {'Content-Type': 'text/css'}})
+        new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
     .get("/art/:file", ({params: {file}}) => Bun.file(`art/${file}`))
     .listen(3000);
@@ -105,7 +103,7 @@ const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
 
 const PostItem = ({title, content, createdAt}: Post) => (
     <div class="post">
-        <sub>{createdAt}</sub>
+        <small>{createdAt}</small>
         <h1>{title}</h1>
         <p>{content}</p>
     </div>

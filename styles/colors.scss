@@ -1,0 +1,51 @@
+$palettes: (
+        primary: (
+                dark: #B6B4A9,
+                medium: #E8E6D4,
+                light: #F1EEE5
+        ),
+        grey: (
+                dark: #676973,
+                medium: #EAECEF,
+                light: #F0F3F5
+        ),
+        text: (
+                strong: #D7D3AA,
+                medium: #E8E6D4
+        ),
+        text-on-primary: (
+                strong: #0E0D0D
+        ),
+        other: (
+                background: #0E0D0D
+        )
+);
+
+@function color($palette-key,$color-key) {
+  @if map-has-key($palettes, $palette-key) {
+    $palette: map-get($palettes, $palette-key);
+
+    @if map-has-key($palette, $color-key) {
+      @return map-get($palette, $color-key);
+    }
+
+    @warn "Unknown color with the key `#{$color-key}` in palette with the key `#{$palette-key}`";
+    @return null;
+  }
+
+  @warn "Unknown palette with the key `#{$palette-key}` in palettes";
+  @return null;
+}
+
+@mixin color-classes {
+  @each $palette-name, $palette in $palettes {
+    @each $color-name, $value in $palette {
+      .text-color-#{$palette-name}-#{$color-name} {
+        color: color($palette-name, $color-name);
+      }
+      .bg-color-#{$palette-name}-#{$color-name} {
+        background-color: color($palette-name, $color-name);
+      }
+    }
+  }
+}

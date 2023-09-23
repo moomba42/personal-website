@@ -1,0 +1,15 @@
+@mixin icon-label($url) {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  &::before {
+    content: " ";
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: color(text, medium);
+    -webkit-mask-image: url($url);
+    mask-image: url($url);
+  }
+}

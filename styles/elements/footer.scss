@@ -1,0 +1,45 @@
+@use "../mixins" as mixins;
+@use "../colors" as *;
+
+$grid-area: footer;
+@mixin content {
+  .cut-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    &::before {
+      content: " ";
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-color: color(primary, medium);
+      -webkit-mask-image: url("/art/cut.svg");
+      mask-image: url("/art/cut.svg");
+    }
+
+    &::after {
+      content: " ";
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-image: linear-gradient(to right, color(primary, medium) 50%, rgba(255, 255, 255, 0) 0%);
+      background-position: bottom;
+      background-size: 16px 2px;
+      background-repeat: repeat-x;
+    }
+  }
+
+  .link-email {
+    @include mixins.icon-label("/art/mail.svg");
+  }
+
+  .link-phone {
+    @include mixins.icon-label("/art/call.svg");
+  }
+
+  .link-linkedin {
+    @include mixins.icon-label("/art/linkedin.svg");
+  }
+}

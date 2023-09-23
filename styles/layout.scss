@@ -1,0 +1,81 @@
+// Inspired by tailwind
+
+$sizes: (
+        1: 0.125rem,
+        2: 0.25rem,
+        3: 0.5rem,
+        4: 1rem,
+        5: 2rem,
+        6: 3rem,
+        7: 5rem,
+        8: 8rem,
+        9: 10rem
+);
+
+@mixin all {
+  .flex {
+    display: flex;
+
+    &-row {
+      @extend .flex;
+      flex-direction: row;
+    }
+
+    &-col {
+      @extend .flex;
+      flex-direction: column;
+    }
+
+    &-wrap {
+      flex-wrap: wrap;
+    }
+  }
+
+  .items {
+    &-start {
+      @extend .items;
+      align-items: flex-start;
+    }
+    &-stretch {
+      @extend .items;
+      align-items: stretch;
+    }
+    &-center {
+      @extend .items;
+      align-items: center;
+    }
+  }
+
+  .justify {
+    &-start {
+      @extend .justify;
+      justify-content: start;
+    }
+    &-between {
+      @extend .justify;
+      justify-content: space-between;
+    }
+  }
+
+  .gap {
+    @each $name, $size in $sizes {
+      &-#{$name} {
+        gap: $size;
+      }
+    }
+  }
+
+  .whitespace {
+    &-nowrap {
+      white-space: nowrap;
+    }
+  }
+
+  .p {
+    @each $name, $size in $sizes {
+      &-#{$name} {
+        padding: $size;
+      }
+    }
+  }
+}
