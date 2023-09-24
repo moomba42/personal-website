@@ -7,9 +7,16 @@
 
 ## Post storage
 Posts are stored as markdown files in this repository.
-
+ 
 This allows me to leverage a plethora of existing text editors to write my posts, 
-and also avoid setting up an admin panel and authentication system.
+and also avoid setting up an admin panel and an authentication system.
+Additionally, i get a versioning system for free - git!
+
+## TODO
+- [ ] Add post caching system
+- [ ] Style posts
+- [ ] Add a way to read tags from posts
+- [ ] Add post reactions
 
 ## Development
 To start the development server run:

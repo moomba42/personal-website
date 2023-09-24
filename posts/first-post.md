@@ -1,3 +1,4 @@
+<h1>Title</h1>
 # Example title
 
 This is a test of having posts as markdown files.
