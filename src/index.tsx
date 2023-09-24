@@ -92,11 +92,12 @@ const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
     </html>
 );
 
-const PostItem = ({content, createdAt}: Post) => (
+const PostItem = ({contentHtml, tags, createdAt}: Post) => (
     <div class="post">
         <small>{createdAt}</small>
+        <small>{tags}</small>
         <div>
-            {content}
+            {contentHtml}
         </div>
     </div>
 );

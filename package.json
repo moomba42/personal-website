@@ -7,10 +7,13 @@
   },
   "dependencies": {
     "@elysiajs/html": "0.6.5",
-    "elysia": "latest",
-    "sass": "1.68.0"
+    "elysia": "0.7.12",
+    "sass": "1.68.0",
+    "showdown": "2.1.0",
+    "yaml": "^2.3.2"
   },
   "devDependencies": {
+    "@types/showdown": "^2.0.1",
     "bun-types": "latest",
     "typed-html": "3.0.1"
   },
