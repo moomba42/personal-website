@@ -1,34 +1,64 @@
-import Database from "bun:sqlite";
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
+import { statSync } from "fs";
 
 export interface Post {
-    id?: number;
-    title: string;
+    id: string;
+    tags: string[];
     content: string;
+    modifiedAt: Date;
     createdAt: Date;
 }
 
-export class PostsDatabase {
-    private db: Database;
+interface FileDescriptor {
+    path: string;
+    name: string;
+    isDirectory: boolean;
+    modifiedAt: Date;
+    createdAt: Date;
+}
 
-    constructor() {
-        this.db = new Database("posts.db");
-        this.init()
-            .then(() => console.log("Database initialized"))
-            .catch(console.error);
+function compareByCreatedAt(a: FileDescriptor, b: FileDescriptor) {
+    return a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds();
+}
+
+export class PostsDatabase {
+    private readonly dir: string;
+
+    constructor(directory: string) {
+        this.dir = directory;
     }
 
     async list(): Promise<Post[]> {
-        return this.db.query('SELECT * FROM posts').all() as Post[];
+        try {
+            let files = await readdir(this.dir);
+            let fileDescriptors: FileDescriptor[] = files.map((fileName) => {
+                let path = join(this.dir, fileName);
+                let stats = statSync(path);
+                return {
+                    path: path,
+                    name: fileName,
+                    isDirectory: stats.isDirectory(),
+                    modifiedAt: stats.mtime,
+                    createdAt: stats.atime
+                };
+            }).filter((fileDescriptor) => !fileDescriptor.isDirectory);
+            let count = Math.min(10, fileDescriptors.length);
+            let wantedFiles = fileDescriptors.sort(compareByCreatedAt).slice(0, count);
+            let posts = wantedFiles.map(async (fileDescriptor) => {
+                let content = await Bun.file(fileDescriptor.path).text();
+                return {
+                    id: fileDescriptor.name,
+                    tags: [],
+                    content: content,
+                    modifiedAt: fileDescriptor.modifiedAt,
+                    createdAt: fileDescriptor.createdAt
+                } as Post;
+            });
+            return await Promise.all(posts);
+        } catch (e) {
+            console.log(e);
+            return [];
+        }
     }
-
-    async add(post: Post): Promise<Post> {
-        return this.db
-            .query(`INSERT INTO posts (title, content, createdAt) VALUES ($title, $content, $createdAt)`)
-            .get({$title: post.title, $content: post.content, $createdAt: post.createdAt.toDateString()}) as Post;
-    }
-
-    async init(): Promise<void> {
-        return this.db.run('CREATE TABLE IF NOT EXISTS posts (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, createdAt TIMESTAMP)');
-    }
-
 }

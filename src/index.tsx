@@ -6,7 +6,7 @@ import * as sass from "sass";
 
 const app = new Elysia()
     .use(html())
-    .decorate('db', new PostsDatabase())
+    .decorate('db', new PostsDatabase("posts"))
     .get("/", ({set}) => set.redirect = "/posts")
     .get("/posts", ({html}) => html(
         <BaseHtml>
@@ -73,15 +73,6 @@ const app = new Elysia()
         </BaseHtml>
     ))
     .get("/api/posts", async ({db}) => <PostList posts={await db.list()}/>)
-    .post("/api/posts", async ({db, body}) => {
-        const {title, content, createdAt} = body as any;
-        await db.add({
-            title: title,
-            content: content,
-            createdAt: new Date(createdAt)
-        }).catch(console.error);
-        return <PostList posts={await db.list()}/>;
-    })
     .get("/styles.css", () =>
         new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
@@ -101,11 +92,12 @@ const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
     </html>
 );
 
-const PostItem = ({title, content, createdAt}: Post) => (
+const PostItem = ({content, createdAt}: Post) => (
     <div class="post">
         <small>{createdAt}</small>
-        <h1>{title}</h1>
-        <p>{content}</p>
+        <div>
+            {content}
+        </div>
     </div>
 );
 
