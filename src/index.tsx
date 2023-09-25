@@ -52,7 +52,7 @@ const app = new Elysia()
                     <div class="flex-row items-start justify-between p-5">
                         <div class="flex-col items-start gap-4">
                             <p>© 2023 Aleksander Długosz</p>
-                            <q>Raiders roll</q>
+                            <p><q>Raiders roll</q></p>
                         </div>
                         <div class="flex-col items-start gap-5">
                             <a class="link-email" href="mailto:olekdlugi@gmail.com"
@@ -96,7 +96,7 @@ const PostItem = ({contentHtml, tags, createdAt}: Post) => (
     <div class="post">
         <small>{createdAt}</small>
         <small>{tags}</small>
-        <div>
+        <div class="post__content">
             {contentHtml}
         </div>
     </div>

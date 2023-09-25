@@ -8,12 +8,16 @@
   "dependencies": {
     "@elysiajs/html": "0.6.5",
     "elysia": "0.7.12",
-    "sass": "1.68.0",
-    "showdown": "2.1.0",
-    "yaml": "^2.3.2"
+    "front-matter": "4.0.2",
+    "markdown-it": "13.0.1",
+    "markdown-it-checkbox": "1.1.0",
+    "markdown-it-footnote": "3.0.3",
+    "markdown-it-mark": "3.0.1",
+    "markdown-it-sub": "1.0.0",
+    "markdown-it-sup": "1.0.0",
+    "sass": "1.68.0"
   },
   "devDependencies": {
-    "@types/showdown": "^2.0.1",
     "bun-types": "latest",
     "typed-html": "3.0.1"
   },

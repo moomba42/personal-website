@@ -1,20 +1,17 @@
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { statSync } from "fs";
-import showdown from 'showdown';
-import yaml from 'yaml';
+import fm from "front-matter";
 
-const converter = new showdown.Converter({
-    strikethrough: true,
-    ghCompatibleHeaderId: true,
-    parseImgDimensions: true,
-    simplifiedAutoLink: true,
-    tables: true,
-    ghCodeBlocks: true,
-    tasklists: true,
-    openLinksInNewWindow: true,
-    metadata: true
-});
+const converter = require('markdown-it')({
+    linkify: true,
+    typographer: true
+})
+    .use(require('markdown-it-sub'))
+    .use(require('markdown-it-sup'))
+    .use(require('markdown-it-mark'))
+    .use(require('markdown-it-footnote'))
+    .use(require('markdown-it-checkbox'));
 
 export interface Post {
     id: string;
@@ -23,6 +20,10 @@ export interface Post {
     contentHtml: string;
     modifiedAt: Date;
     createdAt: Date;
+}
+
+export interface PostAttributes {
+    tags?: string[];
 }
 
 interface FileDescriptor {
@@ -64,10 +65,11 @@ export class PostsDatabase {
                 .sort(compareByCreatedAt)
                 .slice(0, postsPerPage)
                 .map(async (fileDescriptor) => {
-                    let content = await Bun.file(fileDescriptor.path).text();
-                    let contentHtml = converter.makeHtml(content);
-                    let metadataYaml: string = converter.getMetadata(true).toString() ?? "";
-                    let metadata = yaml.parse(metadataYaml);
+                    let fileText = await Bun.file(fileDescriptor.path).text();
+                    let frontMatter = fm<PostAttributes>(fileText);
+                    let metadata = frontMatter.attributes;
+                    let content = frontMatter.body;
+                    let contentHtml = converter.render(content);
                     return {
                         id: fileDescriptor.name,
                         tags: metadata?.tags ?? [],

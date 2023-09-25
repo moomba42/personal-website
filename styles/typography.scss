@@ -135,3 +135,26 @@ $typography-tag-map: (
     }
   }
 }
+
+
+
+$typography-tag-margin-map: (
+        h1: 0.67em,
+        h2: 0.83em,
+        h3: 1em,
+        h4: 1.33em,
+        h5: 1.67em,
+        h6: 2.33em,
+        p: 1em,
+);
+
+@mixin typography-tag-margins {
+  @each $tag-name, $tag-margin in $typography-tag-margin-map {
+    #{$tag-name} {
+      margin-block-start: $tag-margin;
+      margin-block-end: $tag-margin;
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+    }
+  }
+}

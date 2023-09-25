@@ -191,6 +191,10 @@ see [how to change output](https://github.com/markdown-it/markdown-it-emoji#chan
 - 19^th^
 - H~2~O
 
+100m$^2$
+100m$v2$
+
+
 
 ### [\<ins>](https://github.com/markdown-it/markdown-it-ins)
 
@@ -208,7 +212,7 @@ Footnote 1 link[^first].
 
 Footnote 2 link[^second].
 
-Inline footnote^[Text of inline footnote] definition.
+Inline footnote[^Text of inline footnote] definition.
 
 Duplicated footnote reference[^second].
 
