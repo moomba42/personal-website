@@ -11,7 +11,7 @@ $toc-grid-area: toc;
 
 body {
   background-color: color(other, background);
-  color: color(text, medium);
+  color: color(text, default);
 }
 
 .content {
@@ -69,7 +69,7 @@ body {
 @include typography.typography-classes;
 
 a {
-  color: color(primary, medium);
+  color: color(primary, default);
 
   &:hover {
     color: color(primary, dark);

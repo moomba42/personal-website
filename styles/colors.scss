@@ -1,20 +1,21 @@
 $palettes: (
         primary: (
-                dark: #B6B4A9,
-                medium: #E8E6D4,
-                light: #F1EEE5
+                dark: #A6A390,
+                default: #D9D7C1,
+                light: #EDEBD8
         ),
-        grey: (
-                dark: #676973,
-                medium: #EAECEF,
-                light: #F0F3F5
+        secondary: (
+                dark: #CC7621,
+                default: #F59C33,
+                light: #FFBF66
+        ),
+        tetriary: (
+                dark: #5B992E,
+                default: #69BF41,
+                light: #84E065
         ),
         text: (
-                strong: #D7D3AA,
-                medium: #E8E6D4
-        ),
-        text-on-primary: (
-                strong: #0E0D0D
+                default: #d9d7c1
         ),
         other: (
                 background: #0E0D0D
