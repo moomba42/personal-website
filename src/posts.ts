@@ -2,10 +2,19 @@ import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { statSync } from "fs";
 import fm from "front-matter";
+import hljs from "highlight.js";
 
 const converter = require('markdown-it')({
     linkify: true,
-    typographer: true
+    typographer: true,
+    highlight: (text: string, languageRaw: string) => {
+        if (!languageRaw) return '';
+        let language = hljs.getLanguage(languageRaw);
+        if (!language) return '';
+        return '<pre class="hljs"><div class="hljs-lang-float">'+language.name+'</div><code>' +
+            hljs.highlight(text, {language: languageRaw, ignoreIllegals: true}).value +
+            '</code></pre>';
+    }
 })
     .use(require('markdown-it-sub'))
     .use(require('markdown-it-sup'))

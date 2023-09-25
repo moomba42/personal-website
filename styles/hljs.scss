@@ -1,0 +1,62 @@
+/* This is the theme for the highlight.js library */
+
+@use "colors" as *;
+
+
+@mixin theme {
+  .hljs {
+    position: relative;
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    border-radius: 4px;
+    background-color: color(other, code);
+  }
+
+  .hljs-lang-float {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    color: color(primary, dark);
+  }
+
+  .hljs,
+  .hljs-subst {
+    color: color(text, default);
+  }
+
+  .hljs-keyword,
+  .hljs-type {
+    color: color(secondary, default)
+  }
+
+  .hljs-built_in{
+    color: color(secondary, default)
+  }
+
+  .hljs-variable.language_ {
+    color: color(secondary, default)
+  }
+
+  .hljs-variable,
+  .hljs-property,
+  .hljs-attr{
+    color: color(tetriary, default)
+  }
+
+  .hljs-title{
+    color: color(quintary, default)
+  }
+
+  .hljs-title.function_{
+    color: color(quintary, light)
+  }
+
+  .hljs-string,
+  .hljs-section,
+  .hljs-selector-class,
+  .hljs-template-variable,
+  .hljs-deletion {
+    color: color(quaternary, default);
+  }
+}

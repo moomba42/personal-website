@@ -8,6 +8,7 @@
     gap: 1rem;
 
     .post__content {
+      width: 100%;
       @include typography.typography-tag-margins;
     }
   }

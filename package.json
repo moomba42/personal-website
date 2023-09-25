@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "@elysiajs/html": "0.6.5",
+    "@types/markdown-it": "^13.0.1",
     "elysia": "0.7.12",
     "front-matter": "4.0.2",
+    "highlight.js": "^11.8.0",
     "markdown-it": "13.0.1",
     "markdown-it-checkbox": "1.1.0",
     "markdown-it-footnote": "3.0.3",

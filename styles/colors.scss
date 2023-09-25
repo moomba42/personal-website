@@ -1,24 +1,35 @@
 $palettes: (
         primary: (
-                dark: #A6A390,
+                dark: #A6A690,
                 default: #D9D7C1,
-                light: #EDEBD8
+                light: #EDEAD8
         ),
         secondary: (
-                dark: #CC7621,
-                default: #F59C33,
-                light: #FFBF66
+                dark: #B77C23,
+                default: #E59A41,
+                light: #FAB270
         ),
         tetriary: (
-                dark: #5B992E,
-                default: #69BF41,
-                light: #84E065
+                dark: #B5A724,
+                default: #EBE550,
+                light: #FAED7D
+        ),
+        quaternary: (
+                dark: #469939,
+                default: #78BE57,
+                light: #AEE384
+        ),
+        quintary: (
+                dark: #2A7BA7,
+                default: #5AB8E0,
+                light: #88D9EB
         ),
         text: (
-                default: #d9d7c1
+                default: #D9D7C1
         ),
         other: (
-                background: #0E0D0D
+                background: #0E0D0D,
+                code: #131212
         )
 );
 

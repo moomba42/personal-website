@@ -5,6 +5,7 @@
 @use "elements/post" as post;
 @use "layout" as layout;
 @use "variables" as *;
+@use "hljs" as hljs;
 
 $posts-grid-area: posts;
 $toc-grid-area: toc;
@@ -75,3 +76,5 @@ a {
     color: color(primary, dark);
   }
 }
+
+@include hljs.theme;
