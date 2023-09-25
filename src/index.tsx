@@ -3,10 +3,12 @@ import html from "@elysiajs/html";
 import * as elements from "typed-html";
 import { Post, PostsDatabase } from "./posts";
 import * as sass from "sass";
+import { TagsDatabase } from "./tags";
 
 const app = new Elysia()
     .use(html())
-    .decorate('db', new PostsDatabase("posts"))
+    .decorate('posts', new PostsDatabase("posts"))
+    .decorate('tags', new TagsDatabase("posts"))
     .get("/", ({set}) => set.redirect = "/posts")
     .get("/posts", ({html}) => html(
         <BaseHtml>
@@ -30,22 +32,7 @@ const app = new Elysia()
                 <div id="posts" hx-get="/api/posts" hx-trigger="load" hx-swap="innerHTML"></div>
                 <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
-                    <div class="flex-row flex-wrap whitespace-nowrap gap-3">
-                        <a href="#">#all</a>
-                        <a href="#">#java</a>
-                        <a href="#">#c++</a>
-                        <a href="#">#godot</a>
-                        <a href="#">#unity3d</a>
-                        <a href="#">#python</a>
-                        <a href="#">#photoshop</a>
-                        <a href="#">#substance-painter</a>
-                        <a href="#">#blender</a>
-                        <a href="#">#animation</a>
-                        <a href="#">#web-design</a>
-                        <a href="#">#beginner</a>
-                        <a href="#">#shadowhaven</a>
-                        <a href="#">#tgom</a>
-                    </div>
+                    <div hx-get="/api/tags" hx-trigger="load" hx-swap="outerHTML">Loading...</div>
                 </div>
                 <div id="footer" class="flex-col">
                     <div class="cut-line"></div>
@@ -66,13 +53,8 @@ const app = new Elysia()
             </div>
         </BaseHtml>
     ))
-    .get("/admin", ({html}) => html(
-        <BaseHtml>
-            <h3>New post form</h3>
-            <div class="section"><PostForm/></div>
-        </BaseHtml>
-    ))
-    .get("/api/posts", async ({db}) => <PostList posts={await db.list()}/>)
+    .get("/api/posts", async ({posts}) => <PostList posts={await posts.list()}/>)
+    .get("/api/tags", async ({tags}) => <TagsList tags={await tags.list()}/>)
     .get("/styles.css", () =>
         new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
@@ -108,11 +90,8 @@ const PostList = ({posts}: { posts: Post[] }) => (
     </div>
 )
 
-const PostForm = () => (
-    <form hx-post="/posts" hx-target="#posts">
-        <input id="title" name="title" type="text" placeholder="New post title"/>
-        <textarea id="content" name="content" placeholder="Type post content here" cols="80"></textarea>
-        <input type="hidden" name="createdAt" value={new Date(Date.now()).toISOString()}/>
-        <input type="submit" value="Submit"/>
-    </form>
+const TagsList = ({tags}: { tags: string[] }) => (
+    <div class="flex-row flex-wrap whitespace-nowrap gap-3">
+        {tags.map((tag) => <a href="#">#{tag}</a>)}
+    </div>
 )
