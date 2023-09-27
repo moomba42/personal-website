@@ -43,8 +43,8 @@ interface FileDescriptor {
     createdAt: Date;
 }
 
-function compareByCreatedAt(a: FileDescriptor, b: FileDescriptor) {
-    return a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds();
+function compareByCreatedAtDesc(a: FileDescriptor, b: FileDescriptor) {
+    return b.createdAt.getTime() - a.createdAt.getTime();
 }
 
 const postsPerPage: number = 10;
@@ -67,11 +67,11 @@ export class PostsDatabase {
                         name: fileName,
                         isDirectory: stats.isDirectory(),
                         modifiedAt: stats.mtime,
-                        createdAt: stats.atime
+                        createdAt: stats.ctime
                     } as FileDescriptor;
                 })
                 .filter((fileDescriptor) => !fileDescriptor.isDirectory)
-                .sort(compareByCreatedAt)
+                .sort(compareByCreatedAtDesc)
                 .slice(0, postsPerPage)
                 .map(async (fileDescriptor) => {
                     let fileText = await Bun.file(fileDescriptor.path).text();
