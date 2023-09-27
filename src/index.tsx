@@ -59,7 +59,9 @@ const app = new Elysia()
         new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
     .get("/art/:file", ({params: {file}}) => Bun.file(`art/${file}`))
-    .listen(3000);
+    .listen(3000, ({ hostname, port }) => {
+        console.log(`🔗 Running at http://${hostname}:${port}`)
+    });
 
 const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
     <html lang="en">

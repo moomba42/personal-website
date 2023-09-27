@@ -5,6 +5,7 @@ tags:
   - tag1
   - tag2
   - some unique tag
+  - dupadupa
 ---
 
 pajfoiasdfjsd

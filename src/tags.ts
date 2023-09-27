@@ -32,8 +32,9 @@ const readPostTags = function (path: string) {
         let bytesRead = 0;
         let valid = false; // If we have found the end sequence
         let endSequenceCursor = 0; // Keep track of the successful char matches
-        while ((bytesRead = readSync(fd, buffer, 0, chunkSize, position)) >= chunkSize) {
+        do {
             // Read next chunk
+            bytesRead = readSync(fd, buffer, 0, chunkSize, position);
             let chunk = buffer.subarray(0, bytesRead);
             position += chunk.length;
 
@@ -62,7 +63,7 @@ const readPostTags = function (path: string) {
             }
 
             chunks.push(chunk);
-        }
+        } while (bytesRead >= chunkSize);
 
         // Parse metadata if present
         if (valid) {
