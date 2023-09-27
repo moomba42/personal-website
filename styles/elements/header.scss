@@ -10,7 +10,7 @@ $grid-area: header;
     @include typography.text-style(header, title);
   }
 
-  .navigation {
+  .navigation, a, a.selected {
     @include typography.text-style(paragraph, normal);
     font-size: 1.5rem;
 

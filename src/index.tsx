@@ -10,7 +10,7 @@ const app = new Elysia()
     .decorate('posts', new PostsDatabase("posts"))
     .decorate('tags', new TagsDatabase("posts"))
     .get("/", ({set}) => set.redirect = "/posts")
-    .get("/posts", ({html}) => html(
+    .get("/posts", ({html, query}) => html(
         <BaseHtml>
             <div class="content">
                 <div id="header">
@@ -22,17 +22,17 @@ const app = new Elysia()
                             <li>Gallery</li>
                         </ul>
                         <ul>
-                            <li>#all</li>
-                            <li>#shadowhaven</li>
-                            <li>#tgom</li>
+                            <li><a href="/posts" class={!query.tag ? 'selected' : ''}>#all</a></li>
+                            <li><a href="/posts?tag=shadowhaven" class={query.tag == 'shadowhaven' ? 'selected' : ''}>#shadowhaven</a></li>
+                            <li><a href="/posts?tag=tgom" class={query.tag == 'tgom' ? 'selected' : ''}>#tgom</a></li>
                         </ul>
                     </div>
                     <img class="art" src="/art/art1@2x.png" alt="A road leading to a castle in the distance."/>
                 </div>
-                <div id="posts" hx-get="/api/posts" hx-trigger="load" hx-swap="innerHTML"></div>
+                <div id="posts" hx-get={"/api/posts?tag="+query.tag} hx-trigger="load" hx-swap="innerHTML"></div>
                 <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
-                    <div hx-get="/api/tags" hx-trigger="load" hx-swap="outerHTML">Loading...</div>
+                    <div hx-get={"/api/tags?tag="+query.tag} hx-trigger="load" hx-swap="outerHTML">Loading...</div>
                 </div>
                 <div id="footer" class="flex-col">
                     <div class="cut-line"></div>
@@ -53,8 +53,8 @@ const app = new Elysia()
             </div>
         </BaseHtml>
     ))
-    .get("/api/posts", async ({posts}) => <PostList posts={await posts.list()}/>)
-    .get("/api/tags", async ({tags}) => <TagsList tags={await tags.list()}/>)
+    .get("/api/posts", async ({posts, query}) => <PostList posts={await posts.list(query.tag)}/>)
+    .get("/api/tags", async ({tags, query}) => <TagsList tags={await tags.list()} selected={query.tag}/>)
     .get("/styles.css", () =>
         new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
@@ -79,9 +79,9 @@ const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
 const PostItem = ({contentHtml, tags, createdAt}: Post) => (
     <div class="post">
         <small>{createdAt}</small>
-        <small>{tags}</small>
         <div class="post__content">
             {contentHtml}
+            <TagsList tags={tags}/>
         </div>
     </div>
 );
@@ -92,8 +92,8 @@ const PostList = ({posts}: { posts: Post[] }) => (
     </div>
 )
 
-const TagsList = ({tags}: { tags: string[] }) => (
+const TagsList = ({tags, selected}: { tags: string[], selected?: string | null }) => (
     <div class="flex-row flex-wrap whitespace-nowrap gap-3">
-        {tags.map((tag) => <a href="#">#{tag}</a>)}
+        {tags.map((tag) => <a href={"?tag=" + tag} class={tag === selected ? 'selected' : ''}>{"#"+tag}</a>)}
     </div>
 )

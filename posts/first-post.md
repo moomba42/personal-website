@@ -1,4 +1,9 @@
-<h1>Title</h1>
+---
+tags:
+  - tag1
+---
+
+# TITLE
 # Example title
 
 This is a test of having posts as markdown files.

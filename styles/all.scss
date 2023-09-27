@@ -64,17 +64,23 @@ body {
   @include footer.content;
 }
 
-
-@include layout.all;
-@include typography.typography-tag-styles;
-@include typography.typography-classes;
-
 a {
-  color: color(primary, default);
+  color: color(primary, dark);
+  text-decoration: none;
+  text-underline-offset: 2px;
+
+  &.selected {
+    color: color(primary, default);
+    text-decoration: underline;
+  }
 
   &:hover {
-    color: color(primary, dark);
+    color: color(primary, light);
+    text-decoration: underline;
   }
 }
 
 @include hljs.theme;
+@include layout.all;
+@include typography.typography-tag-styles;
+@include typography.typography-classes;

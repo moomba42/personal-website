@@ -4,7 +4,7 @@ import { PostAttributes } from "./posts";
 import { join } from "node:path";
 import { parse } from "yaml";
 
-const readPostTags = function (path: string) {
+export const readPostTags = function (path: string) {
     console.log("Reading post tags", path);
     return new Promise<string[]>((resolve, reject) => {
         // Open the file
@@ -76,7 +76,7 @@ const readPostTags = function (path: string) {
             } else {
                 console.log("\t- No tags found");
             }
-            resolve(metadata.tags ?? []);
+            resolve(tags ?? []);
         } else {
             console.log("\t- No metadata found, but starts like metadata ⚠️");
             resolve([]);

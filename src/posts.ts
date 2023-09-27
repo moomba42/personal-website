@@ -56,9 +56,9 @@ export class PostsDatabase {
         this.dir = directory;
     }
 
-    async list(): Promise<Post[]> {
+    async list(tag: string | null): Promise<Post[]> {
         try {
-            let posts = (await readdir(this.dir))
+            let postsPromise = (await readdir(this.dir))
                 .map((fileName) => {
                     let path = join(this.dir, fileName);
                     let stats = statSync(path);
@@ -88,7 +88,13 @@ export class PostsDatabase {
                         createdAt: fileDescriptor.createdAt
                     } as Post;
                 });
-            return await Promise.all(posts);
+            let posts = await Promise.all(postsPromise);
+            if(tag && tag !== "undefined") {
+                console.log("Filtering by tag", tag);
+                console.log("Tag type", typeof tag);
+                posts = posts.filter((post) => post.tags.includes(tag));
+            }
+            return posts;
         } catch (e) {
             console.log(e);
             return [];
