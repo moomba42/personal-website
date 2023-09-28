@@ -13,43 +13,13 @@ const app = new Elysia()
     .get("/posts", ({html, query}) => html(
         <BaseHtml>
             <div class="content">
-                <div id="header">
-                    <div class="title">Moomba's Seaside Port</div>
-                    <div class="navigation flex-row items-start gap-9">
-                        <ul>
-                            <li>Posts</li>
-                            <li>About Me</li>
-                            <li>Gallery</li>
-                        </ul>
-                        <ul>
-                            <li><a href="/posts" class={!query.tag ? 'selected' : ''}>#all</a></li>
-                            <li><a href="/posts?tag=shadowhaven" class={query.tag == 'shadowhaven' ? 'selected' : ''}>#shadowhaven</a></li>
-                            <li><a href="/posts?tag=tgom" class={query.tag == 'tgom' ? 'selected' : ''}>#tgom</a></li>
-                        </ul>
-                    </div>
-                    <img class="art" src="/art/art1@2x.png" alt="A road leading to a castle in the distance."/>
-                </div>
+                <Header selectedTag={query.tag ?? undefined}/>
                 <div id="posts" hx-get={"/api/posts?tag="+query.tag} hx-trigger="load" hx-swap="innerHTML"></div>
                 <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
                     <div hx-get={"/api/tags?tag="+query.tag} hx-trigger="load" hx-swap="outerHTML">Loading...</div>
                 </div>
-                <div id="footer" class="flex-col">
-                    <div class="cut-line"></div>
-                    <div class="flex-row items-start justify-between p-5">
-                        <div class="flex-col items-start gap-4">
-                            <p>© 2023 Aleksander Długosz</p>
-                            <p><q>Raiders roll</q></p>
-                        </div>
-                        <div class="flex-col items-start gap-5">
-                            <a class="link-email" href="mailto:olekdlugi@gmail.com"
-                               target="_blank">olekdlugi@gmail.com</a>
-                            <a class="link-phone" href="tel:+48505873740" target="_blank">+48 505 873 740</a>
-                            <a class="link-linkedin" href="https://www.linkedin.com/in/adlugosz/"
-                               target="_blank">in/adlugosz</a>
-                        </div>
-                    </div>
-                </div>
+                <Footer/>
             </div>
         </BaseHtml>
     ))
@@ -97,3 +67,41 @@ const TagsList = ({tags, selected}: { tags: string[], selected?: string | null }
         {tags.map((tag) => <a href={"?tag=" + tag} class={tag === selected ? 'selected' : ''}>{"#"+tag}</a>)}
     </div>
 )
+
+const Header = ({selectedTag}: {selectedTag?: string}) => (
+    <div id="header">
+        <div class="title">Moomba's Seaside Port</div>
+        <div class="navigation flex-row items-start gap-9">
+            <ul>
+                <li>Posts</li>
+                <li>About Me</li>
+                <li>Gallery</li>
+            </ul>
+            <ul>
+                <li><a href="/posts" class={!selectedTag ? 'selected' : ''}>#all</a></li>
+                <li><a href="/posts?tag=shadowhaven" class={selectedTag == 'shadowhaven' ? 'selected' : ''}>#shadowhaven</a></li>
+                <li><a href="/posts?tag=tgom" class={selectedTag == 'tgom' ? 'selected' : ''}>#tgom</a></li>
+            </ul>
+        </div>
+        <img class="art" src="/art/art1@2x.png" alt="A road leading to a castle in the distance."/>
+    </div>
+);
+
+const Footer = () => (
+    <div id="footer" class="flex-col">
+        <div class="cut-line"></div>
+        <div class="flex-row items-start justify-between p-5">
+            <div class="flex-col items-start gap-4">
+                <p>© 2023 Aleksander Długosz</p>
+                <p><q>Raiders roll</q></p>
+            </div>
+            <div class="flex-col items-start gap-5">
+                <a class="link-email" href="mailto:olekdlugi@gmail.com"
+                   target="_blank">olekdlugi@gmail.com</a>
+                <a class="link-phone" href="tel:+48505873740" target="_blank">+48 505 873 740</a>
+                <a class="link-linkedin" href="https://www.linkedin.com/in/adlugosz/"
+                   target="_blank">in/adlugosz</a>
+            </div>
+        </div>
+    </div>
+);
