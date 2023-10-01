@@ -4,21 +4,57 @@
 
 
 @mixin theme {
-  .hljs {
+  .hljs-container {
     position: relative;
+    border-radius: 4px;
+    scrollbar-width: thin;
+
+    $decoration-line-width: 3px;
+
+    .hljs-language {
+      position: absolute;
+      top: 0.5em;
+      right: calc(0.5em + $decoration-line-width);
+      color: color(primary, dark);
+    }
+
+    .hljs-fade {
+      position: absolute;
+      top: 0;
+      right: $decoration-line-width;
+      bottom: 0;
+      width: $decoration-line-width;
+      background-color: color(other, background);
+    }
+
+    ::-webkit-scrollbar {
+      height: 0.5rem;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background: color(primary, default);
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: color(primary, dark);
+    }
+  }
+
+  .hljs {
     display: block;
     overflow-x: auto;
     padding: 0.5em;
-    border-radius: 4px;
     background-color: color(other, code);
   }
 
-  .hljs-lang-float {
-    position: absolute;
-    top: 0.5em;
-    right: 0.5em;
-    color: color(primary, dark);
-  }
 
   .hljs,
   .hljs-subst {

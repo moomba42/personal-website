@@ -11,9 +11,14 @@ const converter = require('markdown-it')({
         if (!languageRaw) return '';
         let language = hljs.getLanguage(languageRaw);
         if (!language) return '';
-        return '<pre class="hljs"><div class="hljs-lang-float">'+language.name+'</div><code>' +
+        return '<div class="hljs-container">' +
+            '<div class="hljs-fade"></div>' +
+            '<div class="hljs-language">' + language.name + '</div>' +
+            '<pre class="hljs"><code>' +
             hljs.highlight(text, {language: languageRaw, ignoreIllegals: true}).value +
-            '</code></pre>';
+            '</code></pre>' +
+            '<div class="hljs-scroll-text">SCROLL</div>' +
+            '</div>';
     }
 })
     .use(require('markdown-it-sub'))
@@ -89,7 +94,7 @@ export class PostsDatabase {
                     } as Post;
                 });
             let posts = await Promise.all(postsPromise);
-            if(tag && tag !== "undefined") {
+            if (tag && tag !== "undefined") {
                 console.log("Filtering by tag", tag);
                 console.log("Tag type", typeof tag);
                 posts = posts.filter((post) => post.tags.includes(tag));

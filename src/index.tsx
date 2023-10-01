@@ -14,7 +14,7 @@ const app = new Elysia()
         <BaseHtml>
             <div class="content">
                 <Header selectedTag={query.tag ?? undefined}/>
-                <div id="posts" hx-get={"/api/posts?tag="+query.tag} hx-trigger="load" hx-swap="innerHTML"></div>
+                <div id="posts" hx-get={"/api/posts?tag="+query.tag} hx-trigger="load" hx-swap="outerHTML"></div>
                 <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
                     <div hx-get={"/api/tags?tag="+query.tag} hx-trigger="load" hx-swap="outerHTML">Loading...</div>
@@ -57,7 +57,7 @@ const PostItem = ({contentHtml, tags, createdAt}: Post) => (
 );
 
 const PostList = ({posts}: { posts: Post[] }) => (
-    <div>
+    <div id="posts">
         {posts.map((post) => <PostItem {...post}/>)}
     </div>
 )

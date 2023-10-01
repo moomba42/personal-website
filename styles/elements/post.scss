@@ -1,6 +1,8 @@
 @use "../typography" as typography;
 
 @mixin content {
+  overflow-x: hidden;
+
   .post {
     display: flex;
     flex-direction: column;
