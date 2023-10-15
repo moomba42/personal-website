@@ -1,3 +1,5 @@
+@use "colors" as *;
+
 @mixin icon-label($url) {
   display: flex;
   gap: 0.5rem;
@@ -11,5 +13,28 @@
     background-color: color(text, default);
     -webkit-mask-image: url($url);
     mask-image: url($url);
+  }
+}
+
+@mixin scrollbar() {
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: color(primary, default);
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: color(primary, dark);
   }
 }

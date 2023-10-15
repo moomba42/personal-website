@@ -6,9 +6,12 @@
 @use "layout" as layout;
 @use "variables" as *;
 @use "hljs" as hljs;
+@use "mixins" as mixins;
 
 $posts-grid-area: posts;
 $toc-grid-area: toc;
+
+@include mixins.scrollbar();
 
 body {
   background-color: color(other, background);
