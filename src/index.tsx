@@ -18,7 +18,7 @@ const app = new Elysia()
                     <h4>Road to Shadowhaven</h4>
                 </div>
                 <div>
-                    <img class="art" src="/art/art2@2x.png" alt="A lumbermill owner staring at you, with a house and mountains in the distance."/>
+                    <img style="max-width: 80vw;" src="/art/art2@2x.png" alt="A lumbermill owner staring at you, with a house and mountains in the distance."/>
                     <div style="height: 64px;"></div>
                     <h4>The worker turns to you and tells you:</h4>
                     <div style="height: 8px;"></div>

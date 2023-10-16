@@ -72,3 +72,8 @@ bun run dev
 ```
 
 Open http://localhost:3000/ with your browser to see the result.
+
+To run with PM2 and Bun as interpreter:
+```bash
+pm2 start pm2.config.js
+```
