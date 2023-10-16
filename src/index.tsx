@@ -9,7 +9,26 @@ const app = new Elysia()
     .use(html())
     .decorate('posts', new PostsDatabase("posts"))
     .decorate('tags', new TagsDatabase("posts"))
-    .get("/", ({set}) => set.redirect = "/posts")
+    .get("/", ({set}) => set.redirect = "/construction")
+    .get("/construction", ({html}) => html(
+        <BaseHtml>
+            <div class="content">
+                <div id="header">
+                    <h1 class="title">The Lumbermill</h1>
+                    <h4>Road to Shadowhaven</h4>
+                </div>
+                <div>
+                    <img class="art" src="/art/art2@2x.png" alt="A lumbermill owner staring at you, with a house and mountains in the distance."/>
+                    <div style="height: 64px;"></div>
+                    <h4>The worker turns to you and tells you:</h4>
+                    <div style="height: 8px;"></div>
+                    <p>This site is still under construction.</p>
+                    <p>Please come back later.</p>
+                </div>
+                <Footer/>
+            </div>
+        </BaseHtml>
+    ))
     .get("/posts", ({html, query}) => html(
         <BaseHtml>
             <div class="content">
@@ -73,9 +92,9 @@ const Header = ({selectedTag}: {selectedTag?: string}) => (
         <div class="title">Moomba's Seaside Port</div>
         <div class="navigation flex-row items-start gap-9">
             <ul>
-                <li>Posts</li>
-                <li>About Me</li>
-                <li>Gallery</li>
+                <li><a href="/posts">Posts</a></li>
+                <li><a href="/about-me">About Me</a></li>
+                <li><a href="/gallery">Gallery</a></li>
             </ul>
             <ul>
                 <li><a href="/posts" class={!selectedTag ? 'selected' : ''}>#all</a></li>
