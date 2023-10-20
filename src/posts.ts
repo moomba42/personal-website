@@ -4,6 +4,7 @@ import { statSync } from "fs";
 import fm from "front-matter";
 import hljs from "highlight.js";
 import { file } from "bun";
+import * as fs from "fs";
 
 const converter = require('markdown-it')({
     linkify: true,
@@ -83,9 +84,10 @@ export class PostsDatabase {
                 .filter((fileDescriptor) => !fileDescriptor.isDirectory)
                 .sort(compareByCreatedAtDesc)
                 .slice(0, postsPerPage)
-                .map(async (fileDescriptor) => {
+                .map((fileDescriptor) => {
                     console.log(`Reading as bun file `);
-                    let fileText = await Bun.file(fileDescriptor.path).text();
+                    const fileText = fs.readFileSync(fileDescriptor.path,
+                        { encoding: 'utf8', flag: 'r' });
                     console.log(`Parsing front matter`);
                     let frontMatter = fm<PostAttributes>(fileText);
                     console.log(`Getting metadata from frontmatter`);
