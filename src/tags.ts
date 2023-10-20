@@ -11,92 +11,84 @@ export const readPostTags = function (path: string) {
         let chunkSize = 1024; // 1 KB
         let fd = openSync(path, 'r');
 
-        // Look for start sequence
-        console.log(`\t- Looking for start sequence️`);
-        let startSequence = '---\n';
-        let startLength = startSequence.length;
-        let startBuffer = Buffer.from(new Uint8Array(startLength));
-        readSync(fd, startBuffer, 0, startLength, 0);
-        if (startBuffer.toString('utf8') !== startSequence) {
-            console.log("\t- No metadata found!");
-            closeSync(fd);
-            resolve([]);
-            return;
-        }
+        try {
+            // Look for start sequence
+            let startSequence = '---\n';
+            let startLength = startSequence.length;
+            let startBuffer = Buffer.from(new Uint8Array(startLength));
+            readSync(fd, startBuffer, 0, startLength, 0);
+            if (startBuffer.toString('utf8') !== startSequence) {
+                console.log("\t- No metadata found!");
+                closeSync(fd);
+                resolve([]);
+                return;
+            }
 
-        let endSequence = '\n---\n';
-        let position = startBuffer.length; // Start after the start sequence
-        let chunks = [];
+            let endSequence = '\n---\n';
+            let position = startBuffer.length; // Start after the start sequence
+            let chunks = [];
 
-        // Look for end sequence
-        console.log(`\t- Looking for end sequence️`);
-        let buffer = Buffer.from(new Uint8Array(chunkSize));
-        let bytesRead = 0;
-        let valid = false; // If we have found the end sequence
-        let endSequenceCursor = 0; // Keep track of the successful char matches
-        do {
-            // Read next chunk
-            bytesRead = readSync(fd, buffer, 0, chunkSize, position);
-            let chunk = buffer.subarray(0, bytesRead);
-            position += chunk.length;
+            // Look for end sequence
+            let buffer = Buffer.from(new Uint8Array(chunkSize));
+            let bytesRead = 0;
+            let valid = false; // If we have found the end sequence
+            let endSequenceCursor = 0; // Keep track of the successful char matches
+            do {
+                // Read next chunk
+                bytesRead = readSync(fd, buffer, 0, chunkSize, position);
+                let chunk = buffer.subarray(0, bytesRead);
+                position += chunk.length;
 
-            // Find end sequence
-            let endSequenceStartIndex = -1;
-            for (let i = 0; i < chunk.length; i++) {
-                let character = chunk[i];
-                let endSequenceCharacter = endSequence.charCodeAt(endSequenceCursor);
-                if (character === endSequenceCharacter) {
-                    endSequenceCursor++;
-                    if (endSequenceCursor == endSequence.length) {
-                        endSequenceStartIndex = i - endSequence.length + 1;
-                        break;
+                // Find end sequence
+                let endSequenceStartIndex = -1;
+                for (let i = 0; i < chunk.length; i++) {
+                    let character = chunk[i];
+                    let endSequenceCharacter = endSequence.charCodeAt(endSequenceCursor);
+                    if (character === endSequenceCharacter) {
+                        endSequenceCursor++;
+                        if (endSequenceCursor == endSequence.length) {
+                            endSequenceStartIndex = i - endSequence.length + 1;
+                            break;
+                        }
+                    } else {
+                        endSequenceCursor = 0;
                     }
-                } else {
-                    endSequenceCursor = 0;
                 }
-            }
 
-            // If end sequence found, crop the current chunk and break
-            if (endSequenceStartIndex >= 0) {
-                let finalChunk = chunk.subarray(0, endSequenceStartIndex);
-                chunks.push(finalChunk);
-                valid = true;
-                break;
-            }
+                // If end sequence found, crop the current chunk and break
+                if (endSequenceStartIndex >= 0) {
+                    let finalChunk = chunk.subarray(0, endSequenceStartIndex);
+                    chunks.push(finalChunk);
+                    valid = true;
+                    break;
+                }
 
-            chunks.push(chunk);
-        } while (bytesRead >= chunkSize);
+                chunks.push(chunk);
+            } while (bytesRead >= chunkSize);
 
-        // Parse metadata if present
-        if (valid) {
-            console.log("\t- Found metadata");
-            try {
-                console.log(`\t- Concatenating ${chunks.length} chunks️`);
+            // Parse metadata if present
+            if (valid) {
                 let rawMetadataYaml = Buffer.concat(chunks).toString('utf8');
-                console.log(`\t- Parsing metadata`);
                 let metadata = parse(rawMetadataYaml) as PostAttributes;
-                console.log(`\t- Checking tags`);
                 let tags = metadata.tags;
                 if (tags && tags.length > 0) {
                     console.log(`\t- Found ${tags.length} tags`);
                 } else {
                     console.log("\t- No tags found");
                 }
-                console.log(`\t- Resolving`);
                 closeSync(fd);
                 resolve(tags ?? []);
                 return;
-            } catch (e) {
-                console.log("\t- An error occurred during parsing!");
             }
-        } else {
+
             console.log("\t- No metadata found, but starts like metadata!");
-            closeSync(fd);
-            resolve([]);
-            return;
+
+        } catch (e) {
+            console.log("\t- An error occurred!");
         }
 
         closeSync(fd);
+        resolve([]);
     });
 }
 
@@ -109,10 +101,8 @@ export class TagsDatabase {
 
     async list(): Promise<string[]> {
         try {
-            console.log("Before readdir");
             let directoryEntries = await readdir(this.dir, {withFileTypes: true});
             let files = directoryEntries.filter((entry) => entry.isFile()).map((file) => file.name);
-            console.log("Found the following files in posts directory: ", files);
             let allTags: string[] = [];
             for (let fileName of files) {
                 let path = join(this.dir, fileName);
