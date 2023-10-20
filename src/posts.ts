@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { statSync } from "fs";
 import fm from "front-matter";
 import hljs from "highlight.js";
+import { file } from "bun";
 
 const converter = require('markdown-it')({
     linkify: true,
@@ -62,11 +63,15 @@ export class PostsDatabase {
     }
 
     async list(tag: string | null): Promise<Post[]> {
+        console.log("Reading posts by tag ", tag)
         try {
             let postsPromise = (await readdir(this.dir))
                 .map((fileName) => {
+                    console.log(`Getting full path for filename ${fileName}`);
                     let path = join(this.dir, fileName);
+                    console.log(`Got full path: ${path}. Getting stats.`);
                     let stats = statSync(path);
+                    console.log(`Got stats: `, stats);
                     return {
                         path: path,
                         name: fileName,
@@ -79,11 +84,16 @@ export class PostsDatabase {
                 .sort(compareByCreatedAtDesc)
                 .slice(0, postsPerPage)
                 .map(async (fileDescriptor) => {
+                    console.log(`Reading as bun file `);
                     let fileText = await Bun.file(fileDescriptor.path).text();
+                    console.log(`Parsing front matter`);
                     let frontMatter = fm<PostAttributes>(fileText);
+                    console.log(`Getting metadata from frontmatter`);
                     let metadata = frontMatter.attributes;
                     let content = frontMatter.body;
+                    console.log(`Rendering html`);
                     let contentHtml = converter.render(content);
+                    console.log(`Returning post`);
                     return {
                         id: fileDescriptor.name,
                         tags: metadata?.tags ?? [],
@@ -99,6 +109,7 @@ export class PostsDatabase {
                 console.log("Tag type", typeof tag);
                 posts = posts.filter((post) => post.tags.includes(tag));
             }
+            console.log(`Returning posts`);
             return posts;
         } catch (e) {
             console.log(e);
