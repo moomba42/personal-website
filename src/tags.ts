@@ -12,12 +12,13 @@ export const readPostTags = function (path: string) {
         let fd = openSync(path, 'r');
 
         // Look for start sequence
+        console.log(`\t- Looking for start sequence️`);
         let startSequence = '---\n';
         let startLength = startSequence.length;
         let startBuffer = Buffer.from(new Uint8Array(startLength));
         readSync(fd, startBuffer, 0, startLength, 0);
         if (startBuffer.toString('utf8') !== startSequence) {
-            console.log("\t- No metadata found ⚠️");
+            console.log("\t- No metadata found!");
             closeSync(fd);
             resolve([]);
             return;
@@ -28,6 +29,7 @@ export const readPostTags = function (path: string) {
         let chunks = [];
 
         // Look for end sequence
+        console.log(`\t- Looking for end sequence️`);
         let buffer = Buffer.from(new Uint8Array(chunkSize));
         let bytesRead = 0;
         let valid = false; // If we have found the end sequence
@@ -68,18 +70,30 @@ export const readPostTags = function (path: string) {
         // Parse metadata if present
         if (valid) {
             console.log("\t- Found metadata");
-            let rawMetadataYaml = Buffer.concat(chunks).toString('utf8');
-            let metadata = parse(rawMetadataYaml) as PostAttributes;
-            let tags = metadata.tags;
-            if (tags && tags.length > 0) {
-                console.log(`\t- Found ${tags.length} tags`);
-            } else {
-                console.log("\t- No tags found");
+            try {
+                console.log(`\t- Concatenating ${chunks.length} chunks️`);
+                let rawMetadataYaml = Buffer.concat(chunks).toString('utf8');
+                console.log(`\t- Parsing metadata`);
+                let metadata = parse(rawMetadataYaml) as PostAttributes;
+                console.log(`\t- Checking tags`);
+                let tags = metadata.tags;
+                if (tags && tags.length > 0) {
+                    console.log(`\t- Found ${tags.length} tags`);
+                } else {
+                    console.log("\t- No tags found");
+                }
+                console.log(`\t- Resolving`);
+                closeSync(fd);
+                resolve(tags ?? []);
+                return;
+            } catch (e) {
+                console.log("\t- An error occurred during parsing!");
             }
-            resolve(tags ?? []);
         } else {
-            console.log("\t- No metadata found, but starts like metadata ⚠️");
+            console.log("\t- No metadata found, but starts like metadata!");
+            closeSync(fd);
             resolve([]);
+            return;
         }
 
         closeSync(fd);
@@ -95,6 +109,7 @@ export class TagsDatabase {
 
     async list(): Promise<string[]> {
         try {
+            console.log("Before readdir");
             let directoryEntries = await readdir(this.dir, {withFileTypes: true});
             let files = directoryEntries.filter((entry) => entry.isFile()).map((file) => file.name);
             console.log("Found the following files in posts directory: ", files);
