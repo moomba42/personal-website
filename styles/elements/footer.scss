@@ -15,8 +15,8 @@ $grid-area: footer;
       width: 24px;
       height: 24px;
       background-color: color(primary, default);
-      -webkit-mask-image: url("/art/cut.svg");
-      mask-image: url("/art/cut.svg");
+      -webkit-mask-image: url("/resources/cut.svg");
+      mask-image: url("/resources/cut.svg");
     }
 
     &::after {
@@ -32,14 +32,14 @@ $grid-area: footer;
   }
 
   .link-email {
-    @include mixins.icon-label("/art/mail.svg");
+    @include mixins.icon-label("/resources/mail.svg");
   }
 
   .link-phone {
-    @include mixins.icon-label("/art/call.svg");
+    @include mixins.icon-label("/resources/call.svg");
   }
 
   .link-linkedin {
-    @include mixins.icon-label("/art/linkedin.svg");
+    @include mixins.icon-label("/resources/linkedin.svg");
   }
 }

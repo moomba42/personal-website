@@ -7,6 +7,7 @@
 @use "variables" as *;
 @use "hljs" as hljs;
 @use "mixins" as mixins;
+@use "inter" as inter;
 
 $posts-grid-area: posts;
 $toc-grid-area: toc;
@@ -87,3 +88,5 @@ a {
 @include layout.all;
 @include typography.typography-tag-styles;
 @include typography.typography-classes;
+
+@include inter.inter-font();

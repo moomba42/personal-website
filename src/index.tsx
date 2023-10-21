@@ -18,7 +18,7 @@ const app = new Elysia()
                     <h4>Road to Shadowhaven</h4>
                 </div>
                 <div>
-                    <img style="max-width: 80vw;" src="/art/art2@2x.png" alt="A lumbermill owner staring at you, with a house and mountains in the distance."/>
+                    <img style="max-width: 80vw;" src="/Users/adlugosz/Development/personal-website/resources/art2@2x.png" alt="A lumbermill owner staring at you, with a house and mountains in the distance."/>
                     <div style="height: 64px;"></div>
                     <h4>The worker turns to you and tells you:</h4>
                     <div style="height: 8px;"></div>
@@ -29,14 +29,14 @@ const app = new Elysia()
             </div>
         </BaseHtml>
     ))
-    .get("/posts", ({html, query}) => html(
+    .get("/posts", async ({posts, tags, html, query}) => html(
         <BaseHtml>
             <div class="content">
                 <Header selectedTag={query.tag ?? undefined}/>
-                <div id="posts" hx-get={"/api/posts?tag="+query.tag} hx-trigger="load" hx-swap="outerHTML"></div>
+                <PostList posts={await posts.list(query.tag)}/>
                 <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
-                    <div hx-get={"/api/tags?tag="+query.tag} hx-trigger="load" hx-swap="outerHTML">Loading...</div>
+                    <TagsList tags={await tags.list()} selected={query.tag}/>
                 </div>
                 <Footer/>
             </div>
@@ -47,7 +47,7 @@ const app = new Elysia()
     .get("/styles.css", () =>
         new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
-    .get("/art/:file", ({params: {file}}) => Bun.file(`art/${file}`))
+    .get("/resources/:file", ({params: {file}}) => Bun.file(`resources/${file}`))
     .listen(3000, ({ hostname, port }) => {
         console.log(`🔗 Running at http://${hostname}:${port}`)
     });
@@ -102,7 +102,7 @@ const Header = ({selectedTag}: {selectedTag?: string}) => (
                 <li><a href="/posts?tag=tgom" class={selectedTag == 'tgom' ? 'selected' : ''}>#tgom</a></li>
             </ul>
         </div>
-        <img class="art" src="/art/art1@2x.png" alt="A road leading to a castle in the distance."/>
+        <img class="art" src="/resources/art1@2x.png" alt="A road leading to a castle in the distance."/>
     </div>
 );
 
