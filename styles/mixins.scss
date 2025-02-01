@@ -8,11 +8,13 @@
   &::before {
     content: " ";
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     background-color: color(text, default);
     -webkit-mask-image: url($url);
     mask-image: url($url);
+    -webkit-mask-size: contain;
+    mask-size: contain;
   }
 }
 
