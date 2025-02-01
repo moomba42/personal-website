@@ -35,7 +35,7 @@ body {
   box-sizing: border-box;
 
   @media #{map-get($media-queries, tablet)} {
-    padding: 2rem;
+    padding: 3rem;
     grid-template-columns: 1fr;
     grid-template-areas:
             "#{header.$grid-area}"
@@ -46,7 +46,7 @@ body {
   }
 
   @media #{map-get($media-queries, phone)} {
-    padding: 1rem;
+    padding: 1.5rem;
     grid-template-columns: 1fr;
     grid-template-areas:
             "#{header.$grid-area}"
