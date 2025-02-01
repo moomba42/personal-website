@@ -12,18 +12,20 @@ $grid-area: footer;
     &::before {
       content: " ";
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 1.5rem;
+      height: 1.5rem;
       background-color: color(primary, default);
       -webkit-mask-image: url("/resources/cut.svg");
       mask-image: url("/resources/cut.svg");
+      -webkit-mask-size: contain;
+      mask-size: contain;
     }
 
     &::after {
       content: " ";
       display: block;
       width: 100%;
-      height: 2px;
+      height: 0.125rem;
       background-image: linear-gradient(to right, color(primary, default) 50%, rgba(255, 255, 255, 0) 0%);
       background-position: bottom;
       background-size: 16px 2px;

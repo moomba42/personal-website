@@ -31,7 +31,15 @@ $grid-area: header;
     z-index: -1;
   }
 
-  @media screen and (max-width: $media-breakpoint-desktop) {
+  @media #{map-get($media-queries, phone)} {
+    .art {
+      position: static;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  @media #{map-get($media-queries, tablet)} {
     .art {
       position: static;
       width: 100%;

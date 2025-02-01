@@ -17,6 +17,8 @@ $toc-grid-area: toc;
 body {
   background-color: color(other, background);
   color: color(text, default);
+  margin: 0;
+  padding: 0;
 }
 
 .content {
@@ -29,23 +31,29 @@ body {
             "#{$posts-grid-area}  #{$toc-grid-area}   "
             "#{footer.$grid-area} #{footer.$grid-area}";
   gap: 10rem;
-  max-width: 1200px;
-}
+  max-width: $site-width;
+  box-sizing: border-box;
 
-@media screen and (max-width: $media-breakpoint-desktop) {
-  .content {
+  @media #{map-get($media-queries, tablet)} {
+    padding: 2rem;
     grid-template-columns: 1fr;
     grid-template-areas:
-            "header"
-            "toc"
-            "posts"
-            "footer";
+            "#{header.$grid-area}"
+            "#{$toc-grid-area}"
+            "#{$posts-grid-area}"
+            "#{footer.$grid-area}";
+    gap: 4rem;
   }
-}
 
-@media screen and (max-width: $media-breakpoint-phone) {
-  html {
-    font-size: 12px;
+  @media #{map-get($media-queries, phone)} {
+    padding: 1rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+            "#{header.$grid-area}"
+            "#{$toc-grid-area}"
+            "#{$posts-grid-area}"
+            "#{footer.$grid-area}";
+    gap: 2rem;
   }
 }
 
@@ -88,5 +96,10 @@ a {
 @include layout.all;
 @include typography.typography-tag-styles;
 @include typography.typography-classes;
-
 @include inter.inter-font();
+
+@media #{map-get($media-queries, phone)} {
+  html {
+    font-size: 10px;
+  }
+}

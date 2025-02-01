@@ -56,6 +56,7 @@ const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
     <html lang="en">
     <head>
         <title>Moomba's Seaside Port</title>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0"/>
         <link rel="stylesheet" href="styles.css"/>
         <script src="https://unpkg.com/htmx.org@1.9.5"></script>
     </head>
@@ -114,7 +115,7 @@ const Footer = () => (
                 <p>© 2023 Aleksander Długosz</p>
                 <p><q>Raiders roll</q></p>
             </div>
-            <div class="flex-col items-start gap-5">
+            <div class="flex-col items-start gap-5 gap-phone-2">
                 <a class="link-email" href="mailto:olekdlugi@gmail.com"
                    target="_blank">olekdlugi@gmail.com</a>
                 <a class="link-phone" href="tel:+48505873740" target="_blank">+48 505 873 740</a>
