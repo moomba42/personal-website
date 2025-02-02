@@ -63,7 +63,7 @@ export class PostsDatabase {
         this.dir = directory;
     }
 
-    async list(tag: string | null): Promise<Post[]> {
+    async list(tag: string | undefined): Promise<Post[]> {
         try {
             let postsPromise = (await readdir(this.dir))
                 .map((fileName) => {

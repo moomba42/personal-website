@@ -1,6 +1,5 @@
 import { Elysia } from "elysia";
-import html from "@elysiajs/html";
-import * as elements from "typed-html";
+import { html, Html, Children } from "@elysiajs/html";
 import { Post, PostsDatabase } from "./posts";
 import * as sass from "sass";
 import { TagsDatabase } from "./tags";
@@ -9,8 +8,8 @@ const app = new Elysia()
     .use(html())
     .decorate('posts', new PostsDatabase("posts"))
     .decorate('tags', new TagsDatabase("posts"))
-    .get("/", ({set}) => set.redirect = "/construction")
-    .get("/construction", ({html}) => html(
+    .get("/", ({redirect}) => redirect("/construction"))
+    .get("/construction", () =>
         <BaseHtml>
             <div class="content">
                 <div id="header">
@@ -28,7 +27,7 @@ const app = new Elysia()
                 <Footer/>
             </div>
         </BaseHtml>
-    ))
+    )
     .get("/posts", async ({posts, tags, html, query}) => html(
         <BaseHtml>
             <div class="content">
@@ -52,7 +51,7 @@ const app = new Elysia()
         console.log(`🔗 Running at http://${hostname}:${port}`)
     });
 
-const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
+const BaseHtml = ({children}: Children) => "<!DOCTYPE html>" + (
     <html lang="en">
     <head>
         <title>Moomba's Seaside Port</title>
@@ -62,14 +61,14 @@ const BaseHtml = ({children}: elements.Children) => "<!DOCTYPE html>" + (
         <script src="https://unpkg.com/htmx.org@1.9.5"></script>
     </head>
     <body>
-    {children}
+        {children}
     </body>
     </html>
 );
 
 const PostItem = ({contentHtml, tags, createdAt}: Post) => (
     <div class="post">
-        <small>{createdAt}</small>
+        <small>{createdAt.toLocaleString()}</small>
         <div class="post__content">
             {contentHtml}
             <TagsList tags={tags}/>

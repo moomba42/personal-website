@@ -7,23 +7,22 @@
     "build": "bun build --target=bun ./src/index.tsx --outfile=./build/index.js"
   },
   "dependencies": {
-    "@elysiajs/html": "0.6.5",
-    "@types/markdown-it": "^13.0.1",
-    "elysia": "0.7.12",
+    "@elysiajs/html": "1.2.0",
+    "@types/markdown-it": "14.1.2",
+    "elysia": "1.2.11",
     "front-matter": "4.0.2",
-    "highlight.js": "^11.8.0",
-    "markdown-it": "13.0.1",
+    "highlight.js": "11.11.1",
+    "markdown-it": "14.1.0",
     "markdown-it-checkbox": "1.1.0",
-    "markdown-it-footnote": "3.0.3",
-    "markdown-it-mark": "3.0.1",
-    "markdown-it-sub": "1.0.0",
-    "markdown-it-sup": "1.0.0",
-    "sass": "1.68.0",
-    "yaml": "^2.3.2"
+    "markdown-it-footnote": "4.0.0",
+    "markdown-it-mark": "4.0.0",
+    "markdown-it-sub": "2.0.0",
+    "markdown-it-sup": "2.0.0",
+    "sass": "1.83.4",
+    "yaml": "2.7.0"
   },
   "devDependencies": {
-    "bun-types": "latest",
-    "typed-html": "3.0.1"
+    "bun-types": "latest"
   },
   "module": "src/index.js"
 }
