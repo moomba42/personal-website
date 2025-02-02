@@ -7,73 +7,85 @@ $base-text-style: (
         font-weight: 400,
         line-height: normal,
         letter-spacing: 0,
-        margin: 0
+        margin: 0,
 );
 
 $typography: (
         header: (
                 title: (
                         font-size: 3rem,
-                        font-weight: 500
+                        font-weight: 500,
+                        line-height: 1.20833333333,
                 ),
                 1: (
                         font-size: 2rem,
-                        font-weight: 500
+                        font-weight: 500,
+                        line-height: 1.21875,
                 ),
                 2: (
                         font-size: 1.5rem,
-                        font-weight: 700
+                        font-weight: 700,
+                        line-height: 1.20833333333,
                 ),
                 3: (
                         font-size: 1.17rem,
-                        font-weight: 700
+                        font-weight: 700,
+                        line-height: 1.28205128205,
                 ),
                 4: (
                         font-size: 1rem,
-                        font-weight: 700
+                        font-weight: 700,
+                        line-height: 1.1875,
                 ),
                 5: (
                         font-size: .83rem,
-                        font-weight: 700
+                        font-weight: 700,
+                        line-height: 1.20481927711,
                 ),
                 6: (
                         font-size: .67rem,
-                        font-weight: 700
+                        font-weight: 700,
+                        line-height: 1.21268656716,
                 )
         ),
         paragraph: (
                 normal: (
                         font-size: 1rem,
-                        font-weight: 400
+                        font-weight: 400,
+                        line-height: 1.1875,
                 ),
                 quote: (
                         font-size: 1rem,
                         font-weight: 400,
                         font-style: italic,
+                        line-height: 1.1875,
                 )
         ),
         button: (
                 normal: (
                         font-size: 1rem,
                         font-weight: 500,
-                        letter-spacing: 0.035rem
+                        letter-spacing: 0.035rem,
                 )
         ),
         input: (
                 label: (
                         font-size: .83rem,
-                        font-weight: 700
+                        font-weight: 700,
+                        line-height: 1.20481927711
                 ),
                 text: (
                         font-size: 1rem,
-                        font-weight: 400
+                        font-weight: 400,
+                        line-height: 1.1875,
                 )
         ),
         other: (
                 caption: (
                         font-size: 0.67rem,
                         font-weight: 600,
-                        letter-spacing: 0.035rem
+                        letter-spacing: 0.035rem,
+                        line-height: 1.21268656716,
                 )
         )
 );
@@ -119,6 +131,7 @@ $typography-tag-map: (
         h5: header 5,
         h6: header 6,
         p: paragraph normal,
+        li: paragraph normal,
         a: paragraph normal,
         textarea: input text,
         input: input text,

@@ -12,6 +12,10 @@
     .post__content {
       width: 100%;
       @include typography.typography-tag-margins;
+
+      & :first-child {
+        margin-block-start: 0;
+      }
     }
   }
 
