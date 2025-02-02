@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "typography" as typography;
 @use "colors" as *;
 @use "elements/header" as header;
@@ -34,7 +35,7 @@ body {
   max-width: $site-width;
   box-sizing: border-box;
 
-  @media #{map-get($media-queries, tablet)} {
+  @media #{map.get($media-queries, tablet)} {
     padding: 3rem;
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -45,7 +46,7 @@ body {
     gap: 4rem;
   }
 
-  @media #{map-get($media-queries, phone)} {
+  @media #{map.get($media-queries, phone)} {
     padding: 1.5rem;
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -98,7 +99,7 @@ a {
 @include typography.typography-classes;
 @include inter.inter-font();
 
-@media #{map-get($media-queries, phone)} {
+@media #{map.get($media-queries, phone)} {
   html {
     font-size: 10px;
   }

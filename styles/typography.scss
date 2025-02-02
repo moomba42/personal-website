@@ -1,3 +1,5 @@
+@use "sass:list";
+@use "sass:map";
 $base-text-style: (
         font-family: ("Inter", sans-serif),
         font-size: 1rem,
@@ -77,11 +79,11 @@ $typography: (
 );
 
 @function text-style-properties($group-key,$style-key) {
-  @if map-has-key($typography, $group-key) {
-    $group: map-get($typography, $group-key);
+  @if map.has-key($typography, $group-key) {
+    $group: map.get($typography, $group-key);
 
-    @if map-has-key($group, $style-key) {
-      @return map-get($group, $style-key);
+    @if map.has-key($group, $style-key) {
+      @return map.get($group, $style-key);
     }
 
     @warn "Unknown typograhy style with the key `#{$style-key}` in typography group with the key `#{$group-key}`";
@@ -94,7 +96,7 @@ $typography: (
 
 @mixin text-style($group-key,$style-key) {
   $text-style-properties: text-style-properties($group-key, $style-key);
-  @each $property, $value in map-merge($base-text-style, $text-style-properties) {
+  @each $property, $value in map.merge($base-text-style, $text-style-properties) {
     #{$property}: $value;
   }
 }
@@ -130,7 +132,7 @@ $typography-tag-map: (
 @mixin typography-tag-styles {
   @each $tag-name, $tag-typography in $typography-tag-map {
     #{$tag-name} {
-      @include text-style(nth($tag-typography, 1), nth($tag-typography, 2));
+      @include text-style(list.nth($tag-typography, 1), list.nth($tag-typography, 2));
     }
   }
 }

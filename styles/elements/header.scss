@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "../typography" as typography;
 @use "../variables" as *;
 
@@ -31,7 +32,7 @@ $grid-area: header;
     z-index: -1;
   }
 
-  @media #{map-get($media-queries, phone)} {
+  @media #{map.get($media-queries, phone)} {
     .art {
       position: static;
       width: 100%;
@@ -39,7 +40,7 @@ $grid-area: header;
     }
   }
 
-  @media #{map-get($media-queries, tablet)} {
+  @media #{map.get($media-queries, tablet)} {
     .art {
       position: static;
       width: 100%;

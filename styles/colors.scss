@@ -1,3 +1,4 @@
+@use "sass:map";
 $palettes: (
         primary: (
                 dark: #A6A690,
@@ -34,11 +35,11 @@ $palettes: (
 );
 
 @function color($palette-key,$color-key) {
-  @if map-has-key($palettes, $palette-key) {
-    $palette: map-get($palettes, $palette-key);
+  @if map.has-key($palettes, $palette-key) {
+    $palette: map.get($palettes, $palette-key);
 
-    @if map-has-key($palette, $color-key) {
-      @return map-get($palette, $color-key);
+    @if map.has-key($palette, $color-key) {
+      @return map.get($palette, $color-key);
     }
 
     @warn "Unknown color with the key `#{$color-key}` in palette with the key `#{$palette-key}`";
