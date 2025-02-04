@@ -29,16 +29,21 @@
       background-color: color(other, background);
     }
 
-    @include mixins.scrollbar();
+    .hljs-scroll-container {
+      overflow-x: auto;
+      background-color: color(other, code);
+
+      .hljs {
+        width: 0;
+      }
+    }
+
+    @include mixins.scrollbar(color(other, code));
   }
 
   .hljs {
-    display: block;
-    overflow-x: auto;
     padding: 0.5em;
-    background-color: color(other, code);
   }
-
 
   .hljs,
   .hljs-subst {

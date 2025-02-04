@@ -3,7 +3,6 @@ import { join } from 'node:path';
 import { statSync } from "fs";
 import fm from "front-matter";
 import hljs from "highlight.js";
-import { file } from "bun";
 import * as fs from "fs";
 
 const converter = require('markdown-it')({
@@ -16,10 +15,9 @@ const converter = require('markdown-it')({
         return '<div class="hljs-container">' +
             '<div class="hljs-fade"></div>' +
             '<div class="hljs-language">' + language.name + '</div>' +
-            '<pre class="hljs"><code>' +
+            '<div class="hljs-scroll-container"><pre class="hljs"><code>' +
             hljs.highlight(text, {language: languageRaw, ignoreIllegals: true}).value +
-            '</code></pre>' +
-            '<div class="hljs-scroll-text">SCROLL</div>' +
+            '</code></pre></div>' +
             '</div>';
     }
 })

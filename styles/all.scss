@@ -31,8 +31,8 @@ body {
             "#{header.$grid-area} #{header.$grid-area}"
             "#{$posts-grid-area}  #{$toc-grid-area}   "
             "#{footer.$grid-area} #{footer.$grid-area}";
-  gap: 10rem;
-  max-width: $site-width;
+  gap: 5rem;
+  max-width: min($site-width, 100vw);
   box-sizing: border-box;
 
   @media #{map.get($media-queries, tablet)} {
@@ -43,7 +43,7 @@ body {
             "#{$toc-grid-area}"
             "#{$posts-grid-area}"
             "#{footer.$grid-area}";
-    gap: 4rem;
+    gap: 3rem;
   }
 
   @media #{map.get($media-queries, phone)} {
@@ -54,7 +54,7 @@ body {
             "#{$toc-grid-area}"
             "#{$posts-grid-area}"
             "#{footer.$grid-area}";
-    gap: 2rem;
+    gap: 1.5rem;
   }
 }
 

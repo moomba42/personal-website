@@ -1,7 +1,10 @@
+@use "sass:map";
 @use "../typography" as typography;
+@use "../colors" as *;
+@use "../variables" as *;
 
 @mixin content {
-  overflow-x: hidden;
+  //overflow-x: hidden;
 
   .post {
     display: flex;
@@ -9,12 +12,27 @@
     align-items: flex-start;
     gap: 1rem;
 
+    padding: 1rem;
+    margin: -1rem;
+
+    background: rgba(color(primary, default), 0.05);
+    background: linear-gradient(90deg, rgba(color(primary, default), 0.1) 0%, rgba(color(primary, default), 0.05) 35%, rgba(color(primary, default), 0.01) 91%, rgba(color(primary, default), 0) 100%);
+
+    @media #{map.get($media-queries, phone)} {
+      padding: 1.5rem;
+      margin: 1.5rem -1.5rem;
+    }
+
     .post__content {
       width: 100%;
       @include typography.typography-tag-margins;
 
       & :first-child {
         margin-block-start: 0;
+      }
+
+      & strong {
+        color: color(primary, light);
       }
     }
   }
