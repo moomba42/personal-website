@@ -52,13 +52,13 @@ $typography: (
                 normal: (
                         font-size: 1rem,
                         font-weight: 400,
-                        line-height: 1.1875,
+                        line-height: 1.3125,
                 ),
                 quote: (
                         font-size: 1rem,
                         font-weight: 400,
                         font-style: italic,
-                        line-height: 1.1875,
+                        line-height: 1.125,
                 )
         ),
         button: (
@@ -145,6 +145,13 @@ $typography-tag-map: (
 @mixin typography-tag-styles {
   @each $tag-name, $tag-typography in $typography-tag-map {
     #{$tag-name} {
+      @include text-style(list.nth($tag-typography, 1), list.nth($tag-typography, 2));
+    }
+  }
+
+  blockquote {
+    p {
+      $tag-typography: map.get($typography-tag-map, q);
       @include text-style(list.nth($tag-typography, 1), list.nth($tag-typography, 2));
     }
   }

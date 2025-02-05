@@ -3,7 +3,6 @@
 @use "colors" as *;
 @use "mixins" as mixins;
 
-
 @mixin theme {
   .hljs-container {
     position: relative;
@@ -18,15 +17,6 @@
       right: $decoration-line-width;
       background: linear-gradient(0deg, transparent, color(other, code));
       color: color(primary, dark);
-    }
-
-    .hljs-fade {
-      position: absolute;
-      top: 0;
-      right: $decoration-line-width;
-      bottom: 0;
-      width: $decoration-line-width;
-      background-color: color(other, background);
     }
 
     .hljs-scroll-container {

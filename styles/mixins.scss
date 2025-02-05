@@ -25,12 +25,10 @@
     height: 0.8rem;
   }
 
-  /* Track */
   ::-webkit-scrollbar-track {
     background: $background-color;
   }
 
-  /* Handle */
   ::-webkit-scrollbar-thumb {
     border-radius: 1px;
     background: color.adjust(color(primary, dark), $lightness: -30%, $saturation: -5%);
@@ -38,7 +36,6 @@
     cursor: all-scroll;
   }
 
-  /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: color(primary, dark);
   }

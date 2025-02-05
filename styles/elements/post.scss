@@ -12,11 +12,11 @@
     align-items: flex-start;
     gap: 1rem;
 
-    padding: 1rem;
-    margin: -1rem;
+    padding: 1rem 1rem;
+    margin: -1rem 0;
 
-    background: rgba(color(primary, default), 0.05);
-    background: linear-gradient(90deg, rgba(color(primary, default), 0.1) 0%, rgba(color(primary, default), 0.05) 35%, rgba(color(primary, default), 0.01) 91%, rgba(color(primary, default), 0) 100%);
+    background: #5f5a4e;
+    color: black;
 
     @media #{map.get($media-queries, phone)} {
       padding: 1.5rem;
@@ -29,10 +29,6 @@
 
       & :first-child {
         margin-block-start: 0;
-      }
-
-      & strong {
-        color: color(primary, light);
       }
     }
   }

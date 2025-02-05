@@ -13,7 +13,6 @@ const converter = require('markdown-it')({
         let language = hljs.getLanguage(languageRaw);
         if (!language) return '';
         return '<div class="hljs-container">' +
-            '<div class="hljs-fade"></div>' +
             '<div class="hljs-language">' + language.name + '</div>' +
             '<div class="hljs-scroll-container"><pre class="hljs"><code>' +
             hljs.highlight(text, {language: languageRaw, ignoreIllegals: true}).value +
