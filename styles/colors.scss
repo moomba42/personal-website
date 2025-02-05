@@ -26,11 +26,13 @@ $palettes: (
                 light: #88D9EB
         ),
         text: (
-                default: #D9D7C1
+                default: #D9D7C1,
+                for-reading: hsl(40deg, 8%, 0%)
         ),
         other: (
                 background: #0E0D0D, // #201f1f
-                code: #131212
+                background-for-reading: #5f5a4e,
+                code: #131212,
         )
 );
 

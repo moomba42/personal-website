@@ -1,11 +1,10 @@
 @use "sass:map";
+@use "sass:color";
 @use "../typography" as typography;
 @use "../colors" as *;
 @use "../variables" as *;
 
 @mixin content {
-  //overflow-x: hidden;
-
   .post {
     display: flex;
     flex-direction: column;
@@ -15,12 +14,16 @@
     padding: 1rem 1rem;
     margin: -1rem 0;
 
-    background: #5f5a4e;
-    color: black;
+    background: color(other, background-for-reading);
+    color: color(text, for-reading);
 
     @media #{map.get($media-queries, phone)} {
       padding: 1.5rem;
       margin: 1.5rem -1.5rem;
+    }
+
+    blockquote {
+      color: color.adjust(color(text, for-reading), $lightness: 15%);
     }
 
     .post__content {
