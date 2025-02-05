@@ -11,15 +11,20 @@
     align-items: flex-start;
     gap: 1rem;
 
-    padding: 1rem 1rem;
+    padding: 2rem 3rem;
     margin: -1rem 0;
 
     background: color(other, background-for-reading);
     color: color(text, for-reading);
 
+    @media #{map.get($media-queries, tablet)} {
+      padding: 1.5rem 2rem;
+      margin: 0 -2rem;
+    }
+
     @media #{map.get($media-queries, phone)} {
-      padding: 1.5rem;
-      margin: 1.5rem -1.5rem;
+      padding: 2rem 1.5rem;
+      margin: 0 -1.5rem;
     }
 
     blockquote {

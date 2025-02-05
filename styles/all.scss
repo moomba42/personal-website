@@ -44,6 +44,7 @@ body {
             "#{$posts-grid-area}"
             "#{footer.$grid-area}";
     gap: 3rem;
+    max-width: min(768px, 100vw);
   }
 
   @media #{map.get($media-queries, phone)} {
@@ -55,6 +56,7 @@ body {
             "#{$posts-grid-area}"
             "#{footer.$grid-area}";
     gap: 1.5rem;
+    max-width: min(425px, 100vw);
   }
 }
 
