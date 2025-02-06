@@ -26,43 +26,39 @@ const converter = require('markdown-it')({
     .use(require('markdown-it-footnote'))
     .use(require('markdown-it-checkbox'));
 
-export interface Post {
-    id: string;
-    tags: string[];
-    contentMd: string;
-    contentHtml: string;
-    modifiedAt: Date;
-    createdAt: Date;
+interface FileDescriptor {
+    name: string;
+    path: string;
+    isDirectory: boolean;
 }
 
 export interface PostAttributes {
     tags?: string[];
 }
 
-interface FileDescriptor {
-    path: string;
+export interface Post {
     name: string;
-    isDirectory: boolean;
-    modifiedAt: Date;
-    createdAt: Date;
-}
-
-function compareByCreatedAtDesc(a: FileDescriptor, b: FileDescriptor) {
-    return b.createdAt.getTime() - a.createdAt.getTime();
+    tags: string[];
+    publishedAt: Date;
+    contentMd: string;
+    contentHtml: string;
 }
 
 const postsPerPage: number = 10;
 
 export class PostsDatabase {
     private readonly dir: string;
+    private posts: Post[] = [];
+    private tags: string[] = [];
 
-    constructor(directory: string) {
+    public constructor(directory: string) {
         this.dir = directory;
+        this.init().then();
     }
 
-    async list(tag: string | undefined): Promise<Post[]> {
+    private async init() {
         try {
-            let postsPromise = (await readdir(this.dir))
+            this.posts = (await readdir(this.dir))
                 .map((fileName) => {
                     let path = join(this.dir, fileName);
                     let stats = statSync(path);
@@ -70,40 +66,61 @@ export class PostsDatabase {
                         path: path,
                         name: fileName,
                         isDirectory: stats.isDirectory(),
-                        modifiedAt: stats.mtime,
-                        createdAt: stats.ctime
                     } as FileDescriptor;
                 })
                 .filter((fileDescriptor) => !fileDescriptor.isDirectory)
-                .sort(compareByCreatedAtDesc)
-                .slice(0, postsPerPage)
+                .sort((a, b) => b.name.localeCompare(a.name))
                 .map((fileDescriptor) => {
                     // https://github.com/oven-sh/bun/issues/5960
                     // let fileText = await Bun.file(fileDescriptor.path).text();
                     // The above will trigger a segfault. Try/catch won't work, nothing will.
                     // Replace with bBun's implementation once the issue is fixed.
                     const fileText = fs.readFileSync(fileDescriptor.path, { encoding: 'utf8', flag: 'r' });
-                    let frontMatter = fm<PostAttributes>(fileText);
-                    let metadata = frontMatter.attributes;
-                    let content = frontMatter.body;
-                    let contentHtml = converter.render(content);
+                    const frontMatter = fm<PostAttributes>(fileText);
+                    const metadata = frontMatter.attributes;
+                    const content = frontMatter.body;
+                    const contentHtml = converter.render(content);
+
+                    const publishedAt = this.parsePublishDateFromFilename(fileDescriptor.name) ?? new Date(Date.now() + 100_000);
+
                     return {
-                        id: fileDescriptor.name,
+                        name: fileDescriptor.name,
                         tags: metadata?.tags ?? [],
+                        publishedAt: publishedAt,
                         contentMd: content,
                         contentHtml: contentHtml,
-                        modifiedAt: fileDescriptor.modifiedAt,
-                        createdAt: fileDescriptor.createdAt
                     } as Post;
                 });
-            let posts = await Promise.all(postsPromise);
-            if (tag && tag !== "undefined") {
-                posts = posts.filter((post) => post.tags.includes(tag));
-            }
-            return posts;
-        } catch (e) {
-            console.log(e);
-            return [];
+            console.log("Loaded "+this.posts.length+" posts");
+        } catch(error) {
+            console.log("Couldn't load posts");
+            console.log(error);
         }
+
+        this.tags = [...new Set(this.posts.flatMap((post) => post.tags))];
+        console.log("Loaded "+this.tags.length+" tags");
+    }
+
+    private parsePublishDateFromFilename(filename: string): Date | null {
+        if(filename.length < 10) {
+            return null;
+        }
+
+        const publishedAtYear = parseInt(filename.slice(0, 4));
+        const publishedAtMonth = parseInt(filename.slice(5, 7));
+        const publishedAtDay = parseInt(filename.slice(8, 10));
+
+        return new Date(Date.UTC(publishedAtYear, publishedAtMonth, publishedAtDay, 12, 0, 0, 0));
+    }
+
+    public async listPublished(tag: string | undefined): Promise<Post[]> {
+        if (tag && tag !== "undefined") {
+            return this.posts.filter((post) => post.tags.includes(tag) && post.publishedAt.getTime() < Date.now()).slice(0, postsPerPage);
+        }
+        return this.posts.filter((post) => post.publishedAt.getTime() < Date.now()).slice(0, postsPerPage);
+    }
+
+    public async listTags(): Promise<string[]> {
+        return this.tags;
     }
 }

@@ -2,12 +2,10 @@ import { Elysia } from "elysia";
 import { html, Html, Children } from "@elysiajs/html";
 import { Post, PostsDatabase } from "./posts";
 import * as sass from "sass";
-import { TagsDatabase } from "./tags";
 
 const app = new Elysia()
     .use(html())
     .decorate('posts', new PostsDatabase("posts"))
-    .decorate('tags', new TagsDatabase("posts"))
     .get("/", ({redirect}) => redirect("/construction"))
     .get("/construction", () =>
         <BaseHtml>
@@ -28,21 +26,21 @@ const app = new Elysia()
             </div>
         </BaseHtml>
     )
-    .get("/posts", async ({posts, tags, html, query}) => html(
+    .get("/posts", async ({posts, html, query}) => html(
         <BaseHtml>
             <div class="content">
                 <Header selectedTag={query.tag ?? undefined}/>
-                <PostList posts={await posts.list(query.tag)}/>
+                <PostList posts={await posts.listPublished(query.tag)}/>
                 <div id="table-of-contents" class="flex-col items-start gap-4">
                     <h1>Table of contents</h1>
-                    <TagsList tags={await tags.list()} selected={query.tag}/>
+                    <TagsList tags={await posts.listTags()} selected={query.tag}/>
                 </div>
                 <Footer/>
             </div>
         </BaseHtml>
     ))
-    .get("/api/posts", async ({posts, query}) => <PostList posts={await posts.list(query.tag)}/>)
-    .get("/api/tags", async ({tags, query}) => <TagsList tags={await tags.list()} selected={query.tag}/>)
+    .get("/api/posts", async ({posts, query}) => <PostList posts={await posts.listPublished(query.tag)}/>)
+    .get("/api/tags", async ({posts, query}) => <TagsList tags={await posts.listTags()} selected={query.tag}/>)
     .get("/styles.css", () =>
         new Response(sass.compile("styles/all.scss").css, {headers: {'Content-Type': 'text/css'}})
     )
@@ -66,9 +64,9 @@ const BaseHtml = ({children}: Children) => "<!DOCTYPE html>" + (
     </html>
 );
 
-const PostItem = ({contentHtml, tags, createdAt}: Post) => (
+const PostItem = ({contentHtml, tags, publishedAt}: Post) => (
     <div class="post">
-        <small>{createdAt.toLocaleString()}</small>
+        <small>{publishedAt.toLocaleString([], {dateStyle: "full"})}</small>
         <div class="post__content">
             {contentHtml}
             <TagsList tags={tags}/>

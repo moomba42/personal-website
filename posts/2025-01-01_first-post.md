@@ -3,7 +3,6 @@ tags:
   - tag1
 ---
 
-# TITLE
 # Example title
 
 This is a test of having posts as markdown files.
